@@ -14,6 +14,7 @@ env:
   APPWRITE_INTERNAL_NETWORK_ENDPOINT: "http://appwrite.default.svc.cluster.local/v1"
   APPWRITE_PROJECT_ID: "airis"
   APPWRITE_DATABASE_ID: "airisdb"
+  _APP_DB_ROOT_USER: root
   APPWRITE_VIDEOS_COLLECTION_ID: "videos"
   APPWRITE_OBJECTS_COLLECTION_ID: "objects"
   APPWRITE_FACES_COLLECTION_ID: "faces"
