@@ -70,5 +70,12 @@ extraVolumes:
         - key: gs-secret.json
           path: gs-secret.json
 
+assetsPvc:
+  enabled: true
+  claimName: "assets-pvc"
+  mountPath: "/home/ubuntu/airis/ai/geo_query_triage"
+  subPath: "airis-environment-assets/geo_query_triage"
+  readOnly: true
+
 serviceAccount:
   name: airis
