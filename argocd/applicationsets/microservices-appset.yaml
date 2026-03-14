@@ -13,7 +13,7 @@ spec:
               generators:
                 # Go over all environmets that have a config.yaml file
                 - git:
-                    repoURL: "https://github.com/yoav-test/gitops-poc.git"
+                    repoURL: "https://github.com/yoavb-airis/gitops-poc.git"
                     revision: main
                     files:
                       - path: environments/**/config.yaml
@@ -23,7 +23,7 @@ spec:
 
                 # Go over all services that have a chart-config.yaml file
                 - git:
-                    repoURL: "https://github.com/yoav-test/gitops-poc.git"
+                    repoURL: "https://github.com/yoavb-airis/gitops-poc.git"
                     revision: main
                     files:
                       - path: services/**/chart-config.yaml
@@ -31,7 +31,7 @@ spec:
 
           # Go over all services that have a values.yaml file for the given environment
           - git:
-              repoURL: "https://github.com/yoav-test/gitops-poc.git"
+              repoURL: "https://github.com/yoavb-airis/gitops-poc.git"
               revision: main
               files:
                 - path: "{{ .app.path.path }}/envs/{{ .env.path.basename }}/values.yaml"
@@ -42,7 +42,7 @@ spec:
     spec:
       project: '{{.values.env_name}}'
       sources:
-        - repoURL: https://github.com/yoav-test/gitops-poc.git
+        - repoURL: https://github.com/yoavb-airis/gitops-poc.git
           targetRevision: main
           ref: values
         - repoURL: '{{ .chart.repoURL }}'

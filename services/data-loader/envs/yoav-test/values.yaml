@@ -6,13 +6,13 @@ image:
 
 env:
   REACT_APP_WS_BASE_URL: "webapp-api-server.default.svc.cluster.local:8083/ws"
-  APPWRITE_BASE_ENDPOINT: "http://app.ramazzotti.raven.gdn/v1"
-  APPWRITE_HOSTNAME: "app.ramazzotti.raven.gdn"
+  APPWRITE_BASE_ENDPOINT: "http://app.yoav-test.raven.gdn/v1"
+  APPWRITE_HOSTNAME: "app.yoav-test.raven.gdn"
   FS_APPWRITE_ENDPOINT: "http://appwrite.default.svc.cluster.local/v1"
   APPWRITE_PROJECT_ID: "airis"
   APPWRITE_DATABASE_ID: "airisdb"
   APPWRITE_COLLECTION_ID: "videos"
-  MAILBOX_UPLOAD_BUCKET: "airis-results-ramazzotti"
+  MAILBOX_UPLOAD_BUCKET: "airis-results-yoav-test"
   FS_PREFIX: "gs://"
 
 envFromSecrets:

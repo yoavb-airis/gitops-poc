@@ -9,7 +9,7 @@ env:
   BENTOML_DO_NOT_TRACK: "True"
   TIMEOUT: "1500"
   GOOGLE_APPLICATION_CREDENTIALS: "/secrets/gs-secret.json"
-  DEDUP_BUCKET: "gs://ramazzotti-dedup"
+  DEDUP_BUCKET: "gs://yoav-test-dedup"
 
 resources:
   limits:

@@ -3,13 +3,13 @@ global:
   cluster_address: svc.cluster.local
   serviceAccountName: airis
   imagePullSecrets: []
-  s3_bucket: "airis-results-ramazzotti"
-  s3_directory: "ramazzotti"
+  s3_bucket: "airis-results-yoav-test"
+  s3_directory: "yoav-test"
   assets_bucket: "airis-pocs"
   data_source: "imperial"
   extraction_prompt: ""
   labels_prompt: ""
-  pilot_branch: "pilot/ramazzotti"
+  pilot_branch: "pilot/yoav-test"
 
 storage:
   is_s3: false
@@ -154,10 +154,10 @@ dagster:
     storageClass: "standard-rwo"
     size: 10Gi
   ingress:
-    host: "dagster.ramazzotti.raven.gdn"
-    ingressClassName: "ramazzotti-traefik-iap"
+    host: "dagster.yoav-test.raven.gdn"
+    ingressClassName: "yoav-test-traefik-iap"
   externalServices:
-    fileServerHost: "app.ramazzotti.raven.gdn"
+    fileServerHost: "app.yoav-test.raven.gdn"
     speedopsHost: ""
     webappApiServerPort: 8083
 
@@ -234,15 +234,15 @@ appwrite:
     image_name: "us-central1-docker.pkg.dev/airis-artifacts/packages/initialize-webapp"
     image_tag: "2026-03-09-T-04-02-07_alpha_9a381a9"
   ingress:
-    ingressClassName: "ramazzotti-traefik-public"
+    ingressClassName: "yoav-test-traefik-public"
     annotations: {}
     pathType: ImplementationSpecific
     appwrite:
-      host: "app.ramazzotti.raven.gdn"
+      host: "app.yoav-test.raven.gdn"
     console:
-      host: "app.ramazzotti.raven.gdn"
+      host: "app.yoav-test.raven.gdn"
     realtime:
-      host: "app.ramazzotti.raven.gdn"
+      host: "app.yoav-test.raven.gdn"
 
 elasticsearch:
   enabled: false

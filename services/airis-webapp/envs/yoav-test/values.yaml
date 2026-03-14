@@ -5,18 +5,18 @@ image:
   tag: "2026-03-09-T-04-02-07_alpha_9a381a9"
 
 env:
-  APPWRITE_BASE_ENDPOINT: "http://app.ramazzotti.raven.gdn/v1"
-  APPWRITE_HOSTNAME: "app.ramazzotti.raven.gdn"
+  APPWRITE_BASE_ENDPOINT: "http://app.yoav-test.raven.gdn/v1"
+  APPWRITE_HOSTNAME: "app.yoav-test.raven.gdn"
   MAPBOX_API_URL: "https://api.mapbox.com"
   REACT_APP_MAPBOX_API_URL: "https://api.mapbox.com"
   ALLOW_MAPBOX_API_FALLBACK: "true"
   REACT_APP_ALLOW_MAPBOX_API_FALLBACK: "true"
-  REACT_APP_STORAGE_PATH_PREFIX: "storage/uploads/app-airis/ramazzotti"
-  MAILBOX_UPLOAD_BUCKET: "airis-results-ramazzotti"
+  REACT_APP_STORAGE_PATH_PREFIX: "storage/uploads/app-airis/yoav-test"
+  MAILBOX_UPLOAD_BUCKET: "airis-results-yoav-test"
   FS_PREFIX: "gs://"
   IS_AIO: "false"
   PELIAS_URL: "http://10.128.0.37:4000"
-  REACT_APP_ENDPOINT: "app.ramazzotti.raven.gdn/v1"
+  REACT_APP_ENDPOINT: "app.yoav-test.raven.gdn/v1"
   REACT_APP_INTERNAL_APPWRITE_ENDPOINT: "appwrite.default.svc.cluster.local/v1"
   REACT_APP_PROJECT: "airis"
   REACT_APP_DATABASE_ID: "airisdb"
@@ -41,7 +41,7 @@ env:
   REACT_APP_SETTINGS_COLLECTION_ID: "settings"
   REACT_APP_VIDEOS_COLLECTION_ID: "videos"
   REACT_APP_SOCIAL_ACCOUNTS_COLLECTION_ID: "social_accounts"
-  REACT_APP_STORAGE_BUCKET: "ramazzotti"
+  REACT_APP_STORAGE_BUCKET: "yoav-test"
   REACT_APP_CUSTOM_STATUSES: "New,In progress,Relevant,Not relevant"
   REACT_APP_INITIAL_EVENT_TYPE_LIST: "People talking,Crying,Whistle,Crowd,Barking,Music,Shofar,Alarm,Siren,Traffic,Jackhammer,Explosion,Gunshots"
   REACT_APP_UNIQUE_NLP_KEYWORDS_COLLECTION_ID: "unique_nlp_keywords"
@@ -78,7 +78,7 @@ env:
   REACT_APP_TRANSLATION_TARGET_LANGUAGE: "italian"
   REACT_APP_SAVED_FILTERS_COLLECTION_ID: "saved_filters"
   REACT_APP_VIDEO_FILE_FORMATS: "mp4"
-  REACT_APP_WS_BASE_URL: "app.ramazzotti.raven.gdn/ws"
+  REACT_APP_WS_BASE_URL: "app.yoav-test.raven.gdn/ws"
   REACT_APP_INTERNAL_WS_BASE_URL: "webapp-api-server.default.svc.cluster.local:8083/ws"
   REACT_APP_HOTJAR_ENABLED: "true"
   REACT_APP_COMMENTS_COLLECTION_ID: "comments"
@@ -122,9 +122,9 @@ service:
 
 ingress:
   enabled: true
-  className: ramazzotti-traefik-public
+  className: yoav-test-traefik-public
   hosts:
-    - host: app.ramazzotti.raven.gdn
+    - host: app.yoav-test.raven.gdn
       paths:
         - path: /
           pathType: ImplementationSpecific

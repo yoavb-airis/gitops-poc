@@ -6,16 +6,16 @@ image:
 
 env:
   GOOGLE_APPLICATION_CREDENTIALS: "/secrets/gs-secret.json"
-  MAILBOX_UPLOAD_BUCKET: "airis-results-ramazzotti"
+  MAILBOX_UPLOAD_BUCKET: "airis-results-yoav-test"
   FS_PREFIX: "gs://"
-  FILE_SERVER_URL: "http://app.ramazzotti.raven.gdn"
+  FILE_SERVER_URL: "http://app.yoav-test.raven.gdn"
   FILE_SERVER_PORT: "8000"
   FILE_SERVER_REFERENCES_PREFIX: "storage/airis-pocs/geolocation/robusta/"
-  FILE_SERVER_RESULTS_ASSETS_PREFIX: "storage/airis-results-ramazzotti/ramazzotti"
+  FILE_SERVER_RESULTS_ASSETS_PREFIX: "storage/airis-results-yoav-test/yoav-test"
   FILE_SERVER_AWS_DEFAULT_REGION: "us-east-1"
   FILE_SERVER_AWS_REFERENCE_BUCKET_NAME: "airis-imagen-geolocation-assets"
   FILE_SERVER_AWS_REFERENCE_REGION: "il-central-1"
-  FILE_SERVER_SOCIAL_ACCOUNT_PICTURES_PREFIX: "storage/airis-reach-raw-data/metadata-urls/ramazzotti"
+  FILE_SERVER_SOCIAL_ACCOUNT_PICTURES_PREFIX: "storage/airis-reach-raw-data/metadata-urls/yoav-test"
 
 envFromSecrets:
   - secretName: appwrite-api-key
@@ -57,9 +57,9 @@ livenessProbe:
 
 ingress:
   enabled: true
-  className: ramazzotti-traefik-public
+  className: yoav-test-traefik-public
   hosts:
-    - host: app.ramazzotti.raven.gdn
+    - host: app.yoav-test.raven.gdn
       paths:
         - path: /storage
           pathType: ImplementationSpecific

@@ -1,4 +1,4 @@
 chart:
-  repoURL: https://github.com/yoav-test/poc-chart.git
+  repoURL: https://github.com/yoavb-airis/poc-chart.git
   targetRevision: main
   path: .

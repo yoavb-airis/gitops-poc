@@ -33,17 +33,17 @@ env:
   QUERY_TABLE_NAME: "querying_table"
   RULES_NOTIFICATIONS_WORKERS: "4"
   RULES_NOTIFICATIONS_CHUNK_SIZE: "200"
-  SYSTEM_HOSTNAME: "app.ramazzotti.raven.gdn"
+  SYSTEM_HOSTNAME: "app.yoav-test.raven.gdn"
   VECTORGOLEM_HOST: "vector-golem.default.svc.cluster.local"
   VECTORGOLEM_PORT: "61728"
-  INDEX_NAME: "airis-ramazzotti"
+  INDEX_NAME: "airis-yoav-test"
   _APP_REDIS_HOST: "redis.default.svc.cluster.local"
   _APP_REDIS_PORT: "6379"
   _APP_REDIS_USER: ""
   _APP_REDIS_PASSWORD: ""
-  REACH_TENANT: "ramazzotti"
+  REACH_TENANT: "yoav-test"
   AIRISML_POST_OFFICE_URL: "http://post-office.default.svc.cluster.local:2704"
-  BASE_WORKING_DIRECTORY: "gs://airis-results-ramazzotti/face_search"
+  BASE_WORKING_DIRECTORY: "gs://airis-results-yoav-test/face_search"
   WEBAPP_WS_API_FACES_VECTOR_SEARCH_DIR: "face_search"
   WEBAPP_WS_API_ACCEPTABLE_OBJECT_TYPES: "person,bags,2 wheels,private,commercial,bulletproof vest,microphone,megaphone,smoke"
   WEBAPP_WS_API_TOP_FACES_AGGREGATION_LIMIT: "6"
@@ -135,9 +135,9 @@ readinessProbe:
 
 ingress:
   enabled: true
-  className: ramazzotti-traefik-public
+  className: yoav-test-traefik-public
   hosts:
-    - host: app.ramazzotti.raven.gdn
+    - host: app.yoav-test.raven.gdn
       paths:
         - path: /ws
           pathType: ImplementationSpecific

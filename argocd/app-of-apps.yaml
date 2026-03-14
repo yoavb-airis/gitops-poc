@@ -8,7 +8,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/yoav-test/gitops-poc.git'
+    repoURL: 'https://github.com/yoavb-airis/gitops-poc.git'
     targetRevision: HEAD
     path: argocd
     directory:
