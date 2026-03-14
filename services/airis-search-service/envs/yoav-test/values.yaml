@@ -22,7 +22,7 @@ envFromSecrets:
   - secretName: speed-ops-es-credentials
     keys:
       - ES_URL
-      - ES_USER
+      - ES_USERNAME
       - ES_PASSWORD
 
 resources:
