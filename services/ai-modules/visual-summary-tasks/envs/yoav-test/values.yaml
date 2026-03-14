@@ -43,6 +43,11 @@ postman:
       mountPath: /secrets
       readOnly: true
 
+envFromSecrets:
+  - secretName: visual-summary-openai-api-key
+    keys:
+      - OPENAI_API_KEY
+
 service:
   port: 3000
 

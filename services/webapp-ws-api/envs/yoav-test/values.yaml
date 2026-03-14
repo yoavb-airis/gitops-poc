@@ -65,6 +65,8 @@ env:
   ANTHROPIC_VERTEX_PROJECT_ID: "airis-pocs"
   CLOUD_ML_REGION: "global"
   SEARCH_FORBIDDEN_WORDS: ""
+  _APP_DB_HOST: "mariadb.default.svc.cluster.local"
+  _APP_DB_SCHEMA: "appwrite"
   VLM_FILTER_RECORD_IDS_MAX_COUNT: "2500"
   VLM_SEARCH_MAX_RESULTS: "200"
   VLM_SEARCH_SOFT_TIME_LIMIT_SECONDS: "270"
@@ -91,6 +93,12 @@ envFromSecrets:
   - secretName: speed-ops-airis-reach-password
     keys:
       - REACH_PASSWORD
+  - secretName: mariadb-new-root
+    keys:
+      - _APP_DB_ROOT_PASS
+      - _APP_DB_PASSWORD
+      - _APP_DB_USER
+      - password
 
 resources:
   limits:

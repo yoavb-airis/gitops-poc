@@ -8,6 +8,7 @@ env:
   SHARED_VOLUME: "/data"
   BENTOML_DO_NOT_TRACK: "True"
   TIMEOUT: "1500"
+  OPENAI_MODULE: "gpt-4o-mini"
 
 resources:
   limits:
@@ -42,6 +43,11 @@ postman:
     - name: gs-secret
       mountPath: /secrets
       readOnly: true
+
+envFromSecrets:
+  - secretName: geo-explainability-openai-api-key
+    keys:
+      - OPENAI_API_KEY
 
 service:
   port: 3000
