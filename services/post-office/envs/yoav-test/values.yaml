@@ -1,0 +1,40 @@
+replicaCount: 2
+
+image:
+  repository: us-central1-docker.pkg.dev/airis-artifacts/packages/post-office
+  tag: "2026-03-09-T-04-02-07_alpha_9a381a9"
+
+env:
+  POSTOFFICE_LOG_SQL: "yes"
+  POSTOFFICE_DB_HOST: "general-postgres.default.svc.cluster.local"
+  POSTOFFICE_MAX_JOBS_PER_QUEUE: "2000"
+
+resources:
+  limits:
+    cpu: 2
+    memory: 2Gi
+  requests:
+    cpu: 2
+    memory: 2Gi
+
+service:
+  port: 2704
+  portName: http
+
+livenessProbe:
+  enabled: true
+  httpGet:
+    path: /healthz
+    port: 2704
+  initialDelaySeconds: 120
+  periodSeconds: 120
+
+serviceMonitor:
+  enabled: true
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 15s
+
+serviceAccount:
+  name: airis

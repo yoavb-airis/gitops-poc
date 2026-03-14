@@ -1,0 +1,146 @@
+replicaCount: 1
+
+image:
+  repository: us-central1-docker.pkg.dev/airis-artifacts/packages/webapp_ws_api
+  tag: "2026-03-09-T-04-02-07_alpha_9a381a9"
+
+env:
+  WEBAPP_POSTGRES_HOST: "webapp-postgres.default.svc.cluster.local"
+  WEBAPP_POSTGRES_PORT: "5432"
+  WEBAPP_POSTGRES_DB: "webapp"
+  WEBAPP_POSTGRES_USER: "postgres"
+  WEBAPP_POSTGRES_PASSWORD: "postgres"
+  GOOGLE_APPLICATION_CREDENTIALS: "/secrets/gs-secret.json"
+  APPWRITE_INTERNAL_NETWORK_ENDPOINT: "http://appwrite.default.svc.cluster.local/v1"
+  APPWRITE_PROJECT_ID: "airis"
+  APPWRITE_DATABASE_ID: "airisdb"
+  APPWRITE_VIDEOS_COLLECTION_ID: "videos"
+  APPWRITE_OBJECTS_COLLECTION_ID: "objects"
+  APPWRITE_FACES_COLLECTION_ID: "faces"
+  APPWRITE_INTERNAL_METADATA_COLLECTION_ID: "internal_metadata"
+  APPWRITE_EXCLUDED_RECORDS_COLLECTION_ID: "excluded_records"
+  APPWRITE_EXTERNAL_METADATA_COLLECTION_ID: "external_metadata"
+  APPWRITE_SETTINGS_COLLECTION_ID: "settings"
+  APPWRITE_AUDIO_EFFECTS_COLLECTION_ID: "audio_effects"
+  APPWRITE_FEEDBACKS_COLLECTION_ID: "feedbacks"
+  APPWRITE_GEOLOCATIONS_COLLECTION_ID: "geolocations"
+  APPWRITE_CASES_COLLECTION_ID: "cases"
+  APPWRITE_CAPSULES_COLLECTION_ID: "capsules"
+  APPWRITE_NLP_COLLECTION_ID: "nlp"
+  APPWRITE_AUDITS_COLLECTION_ID: "audits"
+  APPWRITE_ADMIN_USER: "admin@airis-labs.com"
+  WEBAPP_INTERNAL_HOSTNAME: "airis-webapp.default.svc.cluster.local"
+  QUERY_TABLE_NAME: "querying_table"
+  RULES_NOTIFICATIONS_WORKERS: "4"
+  RULES_NOTIFICATIONS_CHUNK_SIZE: "200"
+  SYSTEM_HOSTNAME: "app.ramazzotti.raven.gdn"
+  VECTORGOLEM_HOST: "vector-golem.default.svc.cluster.local"
+  VECTORGOLEM_PORT: "61728"
+  INDEX_NAME: "airis-ramazzotti"
+  _APP_REDIS_HOST: "redis.default.svc.cluster.local"
+  _APP_REDIS_PORT: "6379"
+  _APP_REDIS_USER: ""
+  _APP_REDIS_PASSWORD: ""
+  REACH_TENANT: "ramazzotti"
+  AIRISML_POST_OFFICE_URL: "http://post-office.default.svc.cluster.local:2704"
+  BASE_WORKING_DIRECTORY: "gs://airis-results-ramazzotti/face_search"
+  WEBAPP_WS_API_FACES_VECTOR_SEARCH_DIR: "face_search"
+  WEBAPP_WS_API_ACCEPTABLE_OBJECT_TYPES: "person,bags,2 wheels,private,commercial,bulletproof vest,microphone,megaphone,smoke"
+  WEBAPP_WS_API_TOP_FACES_AGGREGATION_LIMIT: "6"
+  WEBAPP_WS_API_TOP_NLP_NER_KEYWORDS_AGGREGATION_LIMIT: "5"
+  WEBAPP_WS_API_TOP_RECORD_CAPSULES_KEYWORDS_AGGREGATION_LIMIT: "5"
+  WEBAPP_WS_API_LINK_ANALYSIS_DEGREES_MAX_DEGREES: "2"
+  WEBAPP_WS_API_LINK_ANALYSIS_DEGREES_MINIMUM_OCCURRENCES: "0"
+  WEBAPP_WS_API_LINK_ANALYSIS_DEGREES_NODES_LIMIT: "1000"
+  WEBAPP_WS_API_LINK_ANALYSIS_RECORDS_MINIMUM_OCCURRENCES: "0"
+  WEBAPP_WS_API_VOICE_SIMILARITY_MAX_RESULTS: "10"
+  WEBAPP_WS_API_PLACE_SIMILARITY_MAX_RESULTS: "30"
+  WEBAPP_WS_API_PLACE_SIMILARITY_DISTANCE_THRESHOLD: "0.9"
+  WEBAPP_WS_API_REDIS_WEBSOCKET_ACTIVE_CONNECTIONS_KEY: "websocket:active_connections"
+  WEBAPP_WS_API_REDIS_WEBSOCKET_TTL_IN_SECONDS: "600"
+  AIRIS_SEARCH_SERVICE_URL: "http://airis-search-service.default.svc.cluster.local:8003"
+  AIRIS_SEARCH_TRANSLATION_FLAG: "false"
+  AIRIS_SEARCH_TRANSLATION_LANGUAGE: "English"
+  CLAUDE_CODE_USE_VERTEX: "1"
+  ANTHROPIC_VERTEX_PROJECT_ID: "airis-pocs"
+  CLOUD_ML_REGION: "global"
+  SEARCH_FORBIDDEN_WORDS: ""
+  VLM_FILTER_RECORD_IDS_MAX_COUNT: "2500"
+  VLM_SEARCH_MAX_RESULTS: "200"
+  VLM_SEARCH_SOFT_TIME_LIMIT_SECONDS: "270"
+  VLM_SEARCH_HARD_TIME_LIMIT_SECONDS: "285"
+
+envFromSecrets:
+  - secretName: appwrite-api-key
+    keys:
+      - APPWRITE_API_KEY
+  - secretName: anthropic-api-key
+    keys:
+      - ANTHROPIC_API_KEY
+  - secretName: speed-ops-es-credentials
+    keys:
+      - ES_URL
+      - ES_USER
+      - ES_PASSWORD
+  - secretName: airis-reach-internal-url
+    keys:
+      - REACH_BASE_URL
+  - secretName: speed-ops-airis-reach-username
+    keys:
+      - REACH_USERNAME
+  - secretName: speed-ops-airis-reach-password
+    keys:
+      - REACH_PASSWORD
+
+resources:
+  limits:
+    cpu: 1
+    memory: 2Gi
+  requests:
+    cpu: 1
+    memory: 2Gi
+
+service:
+  port: 8083
+  portName: http
+
+extraVolumes:
+  - name: gs-secret
+    secret:
+      secretName: gs-secret
+      items:
+        - key: gs-secret.json
+          path: gs-secret.json
+
+extraVolumeMounts:
+  - name: gs-secret
+    mountPath: /secrets
+    readOnly: true
+
+livenessProbe:
+  enabled: true
+  httpGet:
+    path: /ws/healthz
+    port: 8083
+  initialDelaySeconds: 120
+  periodSeconds: 120
+
+readinessProbe:
+  enabled: true
+  httpGet:
+    path: /ws/healthz
+    port: 8083
+  initialDelaySeconds: 30
+  periodSeconds: 10
+
+ingress:
+  enabled: true
+  className: ramazzotti-traefik-public
+  hosts:
+    - host: app.ramazzotti.raven.gdn
+      paths:
+        - path: /ws
+          pathType: ImplementationSpecific
+
+serviceAccount:
+  name: airis

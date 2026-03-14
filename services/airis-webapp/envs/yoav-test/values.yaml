@@ -1,0 +1,133 @@
+replicaCount: 1
+
+image:
+  repository: us-central1-docker.pkg.dev/airis-artifacts/packages/airis-webapp
+  tag: "2026-03-09-T-04-02-07_alpha_9a381a9"
+
+env:
+  APPWRITE_BASE_ENDPOINT: "http://app.ramazzotti.raven.gdn/v1"
+  APPWRITE_HOSTNAME: "app.ramazzotti.raven.gdn"
+  MAPBOX_API_URL: "https://api.mapbox.com"
+  REACT_APP_MAPBOX_API_URL: "https://api.mapbox.com"
+  ALLOW_MAPBOX_API_FALLBACK: "true"
+  REACT_APP_ALLOW_MAPBOX_API_FALLBACK: "true"
+  REACT_APP_STORAGE_PATH_PREFIX: "storage/uploads/app-airis/ramazzotti"
+  MAILBOX_UPLOAD_BUCKET: "airis-results-ramazzotti"
+  FS_PREFIX: "gs://"
+  IS_AIO: "false"
+  PELIAS_URL: "http://10.128.0.37:4000"
+  REACT_APP_ENDPOINT: "app.ramazzotti.raven.gdn/v1"
+  REACT_APP_INTERNAL_APPWRITE_ENDPOINT: "appwrite.default.svc.cluster.local/v1"
+  REACT_APP_PROJECT: "airis"
+  REACT_APP_DATABASE_ID: "airisdb"
+  REACT_APP_AUDIO_EFFECTS_COLLECTION_ID: "audio_effects"
+  REACT_APP_AUDITS_COLLECTION_ID: "audits"
+  REACT_APP_CAPSULES_COLLECTION_ID: "capsules"
+  REACT_APP_CASES_COLLECTION_ID: "cases"
+  REACT_APP_EXCLUDED_RECORDS_COLLECTION_ID: "excluded_records"
+  REACT_APP_EXTERNAL_METADATA_COLLECTION_ID: "external_metadata"
+  REACT_APP_FACES_COLLECTION_ID: "faces"
+  REACT_APP_FEEDBACKS_COLLECTION_ID: "feedbacks"
+  REACT_APP_GEOLOCATIONS_COLLECTION_ID: "geolocations"
+  REACT_APP_INTERNAL_METADATA_COLLECTION_ID: "internal_metadata"
+  REACT_APP_NLP_COLLECTION_ID: "nlp"
+  REACT_APP_NOTIFICATIONS_COLLECTION_ID: "notifications"
+  REACT_APP_OBJECTS_COLLECTION_ID: "objects"
+  REACT_APP_CUSTOM_OBJECTS_LIST: "person,bags,2 wheels,private,commercial,bulletproof vest,microphone,megaphone,smoke"
+  REACT_APP_PEOPLE_COLLECTION_ID: "people"
+  REACT_APP_OBJECT_ATTRIBUTES_COLLECTION_ID: "object_attributes"
+  REACT_APP_QUERY_CACHE_COLLECTION_ID: "query_cache"
+  REACT_APP_RULES_COLLECTION_ID: "rules"
+  REACT_APP_SETTINGS_COLLECTION_ID: "settings"
+  REACT_APP_VIDEOS_COLLECTION_ID: "videos"
+  REACT_APP_SOCIAL_ACCOUNTS_COLLECTION_ID: "social_accounts"
+  REACT_APP_STORAGE_BUCKET: "ramazzotti"
+  REACT_APP_CUSTOM_STATUSES: "New,In progress,Relevant,Not relevant"
+  REACT_APP_INITIAL_EVENT_TYPE_LIST: "People talking,Crying,Whistle,Crowd,Barking,Music,Shofar,Alarm,Siren,Traffic,Jackhammer,Explosion,Gunshots"
+  REACT_APP_UNIQUE_NLP_KEYWORDS_COLLECTION_ID: "unique_nlp_keywords"
+  REACT_APP_LINK_ANALYSIS_LIMIT: "209"
+  REACT_APP_AUDIT_TRAIL_REPORT_MAX_ROWS_LENGTH: "100000"
+  REACT_APP_COORDINATES_PRECISION: "5"
+  REACT_APP_DATE_RANGE_PICKER_FORMAT: "DD.MM.YYYY"
+  REACT_APP_DEFAULT_GC_TIME: "300000"
+  REACT_APP_DEFAULT_STALE_TIME: "300000"
+  REACT_APP_DEFAULT_SYSTEM_LABELS: "_enablePersonObjects,admin"
+  REACT_APP_ENTER_COMMENT_CASES_LIMIT: "680"
+  REACT_APP_ENTER_COMMENT_FACES_LIMIT: "150"
+  REACT_APP_FILES_COUNT_MAX_UPLOAD: "10"
+  REACT_APP_FILES_SIZE_MAX_UPLOAD: "104857600"
+  REACT_APP_FILTER_PARAMS: "account,group,platform"
+  REACT_APP_GEOLOCATION_CONFIDENCE_DEFAULT: "0.8"
+  REACT_APP_HIDE_AUDIO_EVENTS: "false"
+  REACT_APP_HIDE_STATS: "false"
+  REACT_APP_HIDE_TRANSCRIPT_FONT_SIZE: "false"
+  REACT_APP_IMAGES_FILE_FORMATS: "png,jpeg,jpg,heic"
+  REACT_APP_INITIAL_OBJECTS_LIST: "person,bags,2 wheels,private,commercial,bulletproof vest,microphone,megaphone,smoke"
+  REACT_APP_MAPBOX_DEFAULT_LATITUDE: "51.5074"
+  REACT_APP_MAPBOX_DEFAULT_LONGITUDE: "0.1278"
+  REACT_APP_MAX_REFERENCE_RESULTS_PER_IMAGE: "8"
+  REACT_APP_NLP_KEYWORDS_MAX_LENGTH: "100"
+  REACT_APP_NUMBER_OF_RESULTS_PER_PAGE: "50"
+  REACT_APP_OBJECT_TYPES: "telephone,bag,shoes"
+  REACT_APP_RECORD_NAME_MAX_LENGTH: "220"
+  REACT_APP_SEARCH_RESULT_SHOW_THUMBNAIL: "true"
+  REACT_APP_SHOW_PLACES_COMPONENT: "false"
+  REACT_APP_SHOW_RECORD_SUMMARY: "true"
+  REACT_APP_SUPPORT_EMAIL: "support@airis-labs.com"
+  REACT_APP_TRANSLATION_PROBABILITY_MINIMUM: "0.05"
+  REACT_APP_TRANSLATION_TARGET_LANGUAGE: "italian"
+  REACT_APP_SAVED_FILTERS_COLLECTION_ID: "saved_filters"
+  REACT_APP_VIDEO_FILE_FORMATS: "mp4"
+  REACT_APP_WS_BASE_URL: "app.ramazzotti.raven.gdn/ws"
+  REACT_APP_INTERNAL_WS_BASE_URL: "webapp-api-server.default.svc.cluster.local:8083/ws"
+  REACT_APP_HOTJAR_ENABLED: "true"
+  REACT_APP_COMMENTS_COLLECTION_ID: "comments"
+  REACT_APP_FEATURE_FLAGS_COLLECTION_ID: "feature_flags"
+  REACT_APP_FEATURE_FLAG_ROLES_COLLECTION_ID: "feature_flag_roles"
+  REACT_APP_LICENSE_PLATES_COLLECTION_ID: "license_plates"
+  REACT_APP_COMMENT_THREAD_COMMENTS_LIMIT: "20"
+  REACT_APP_COMMENT_THREAD_TEXT_LIMIT: "500"
+  REACT_APP_COMMENT_THREAD_TITLE_LIMIT: "100"
+  REACT_APP_HIDDEN_OBJECTS_LIST: ""
+  REACT_APP_LINK_ANALYSIS_DEGREES_LINKS_LIMIT: "2000"
+  REACT_APP_LINK_ANALYSIS_DEGREES_NODES_LIMIT: "1000"
+  REACT_APP_LINK_ANALYSIS_OCCURRENCES_NODES_LIMIT_V1: "209"
+  REACT_APP_PELIAS_API_URL: "http://undefined"
+  REACT_APP_SUSPECT_INPUT_ADDRESS_LIMIT: "250"
+  REACT_APP_SUSPECT_INPUT_LIMIT: "30"
+  REACT_APP_DEFAULT_SIGNUP_ROLES: "admin,senior_analyst"
+  REACT_APP_SUPPORTED_NLP_LANGUAGES: "Italian,English"
+  REACT_APP_TRIAGE_MAX_VIDEO_LENGTH_SECS: "720"
+  REACT_APP_VISUAL_SUMMARY_LABELS: "Enemy Presence,Force Protection,Identifiable People,Special Weapons,Explosives,Tunnels,Rockets,Drones,Propaganda,Protected Sites,Visual Cues for Geolocation,DOMEX Material,BDA,Other Intelligence,Junk"
+
+envFromSecrets:
+  - secretName: appwrite-api-key
+    keys:
+      - APPWRITE_API_KEY
+  - secretName: mapbox-api-key
+    keys:
+      - REACT_APP_MAPBOX_API_KEY
+
+resources:
+  limits:
+    cpu: 1
+    memory: 3Gi
+  requests:
+    cpu: 0
+    memory: 3Gi
+
+service:
+  port: 3000
+  portName: http
+
+ingress:
+  enabled: true
+  className: ramazzotti-traefik-public
+  hosts:
+    - host: app.ramazzotti.raven.gdn
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+
+serviceAccount:
+  name: airis

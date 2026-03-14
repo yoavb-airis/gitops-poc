@@ -1,0 +1,49 @@
+replicaCount: 2
+
+image:
+  repository: us-central1-docker.pkg.dev/airis-artifacts/packages/airis-search-service
+  tag: "2026-03-09-T-04-02-07_alpha_9a381a9"
+
+env:
+  REACT_APP_WS_BASE_URL: "webapp-api-server.default.svc.cluster.local:8083/ws"
+  ENABLE_TRANSLATION: "false"
+  VLM_FILTER_RECORD_IDS_MAX_COUNT: "2500"
+  VLM_SEARCH_MAX_RESULTS: "200"
+  VLM_SEARCH_SOFT_TIME_LIMIT_SECONDS: "270"
+  VLM_SEARCH_HARD_TIME_LIMIT_SECONDS: "285"
+  CLAUDE_CODE_USE_VERTEX: "1"
+  ANTHROPIC_VERTEX_PROJECT_ID: "airis-pocs"
+  CLOUD_ML_REGION: "global"
+
+envFromSecrets:
+  - secretName: anthropic-api-key
+    keys:
+      - ANTHROPIC_API_KEY
+  - secretName: speed-ops-es-credentials
+    keys:
+      - ES_URL
+      - ES_USER
+      - ES_PASSWORD
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 1Gi
+  requests:
+    cpu: 500m
+    memory: 1Gi
+
+service:
+  port: 8003
+  portName: http
+
+livenessProbe:
+  enabled: true
+  httpGet:
+    path: /airis-search/health
+    port: 8003
+  initialDelaySeconds: 30
+  periodSeconds: 30
+
+serviceAccount:
+  name: airis

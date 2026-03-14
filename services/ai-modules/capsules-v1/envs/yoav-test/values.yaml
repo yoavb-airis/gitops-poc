@@ -1,0 +1,63 @@
+replicaCount: 1
+
+image:
+  repository: us-central1-docker.pkg.dev/airis-artifacts/packages/capsules_v1
+  tag: "2026-03-09-T-04-02-07_alpha_9a381a9"
+
+env:
+  SHARED_VOLUME: "/data"
+  BENTOML_DO_NOT_TRACK: "True"
+  TIMEOUT: "1500"
+  GOOGLE_APPLICATION_CREDENTIALS: "/secrets/gs-secret.json"
+
+resources:
+  limits:
+    cpu: 0
+    memory: 1Gi
+  requests:
+    cpu: 0
+    memory: 1Gi
+
+service:
+  port: 3000
+
+gpu:
+  enabled: false
+
+podAnnotations:
+  gke-gcsfuse/volumes: "true"
+  gke-gcsfuse/cpu-limit: "0"
+  gke-gcsfuse/memory-limit: "0"
+  gke-gcsfuse/ephemeral-storage-limit: "0"
+
+postman:
+  enabled: true
+  image:
+    repository: us-central1-docker.pkg.dev/airis-artifacts/packages/postman
+    tag: "2026-03-09-T-04-02-07_alpha_9a381a9"
+  env:
+    JOB_TYPE: "capsules_v1"
+    SHARED_VOLUME: "/data"
+    POST_OFFICE_URL: "http://post-office.default.svc.cluster.local:2704"
+    INFERENCE_URL: "http://localhost:3000/infer"
+    IS_API: "True"
+    SLEEP_TIME: "1"
+    MONITOR_FLAG: "True"
+    TIMEOUT: "550"
+    SHOULD_UPLOAD_DIR: "false"
+    GOOGLE_APPLICATION_CREDENTIALS: "/secrets/gs-secret.json"
+  extraVolumeMounts:
+    - name: gs-secret
+      mountPath: /secrets
+      readOnly: true
+
+extraVolumes:
+  - name: gs-secret
+    secret:
+      secretName: gs-secret
+      items:
+        - key: gs-secret.json
+          path: gs-secret.json
+
+serviceAccount:
+  name: airis

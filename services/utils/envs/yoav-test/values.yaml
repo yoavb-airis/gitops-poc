@@ -1,0 +1,271 @@
+global:
+  namespace: default
+  cluster_address: svc.cluster.local
+  serviceAccountName: airis
+  imagePullSecrets: []
+  s3_bucket: "airis-results-ramazzotti"
+  s3_directory: "ramazzotti"
+  assets_bucket: "airis-pocs"
+  data_source: "imperial"
+  extraction_prompt: ""
+  labels_prompt: ""
+  pilot_branch: "pilot/ramazzotti"
+
+storage:
+  is_s3: false
+  prefix: "gs://"
+  assets_pvc:
+    accessMode: ReadWriteMany
+    size: 5Gi
+    storageClass: "example-storage-class"
+    driver: "gcsfuse.csi.storage.gke.io"
+    mountOptions:
+      - implicit-dirs
+    volumeAttributes: {}
+
+generalPostgres:
+  enabled: true
+  replicas: 1
+  image_name: "us-central1-docker.pkg.dev/airis-artifacts/packages/airis-postgres"
+  image_tag: "2026-03-09-T-04-02-07_alpha_9a381a9"
+  servicePort: 5432
+  username: postgres
+  password: postgres
+  resources:
+    limits:
+      cpu: 16
+      memory: 16Gi
+    requests:
+      cpu: 16
+      memory: 16Gi
+  storage:
+    accessMode: ReadWriteOnce
+    storageClass: "standard-rwo"
+    size: 200Gi
+
+golemPostgres:
+  enabled: true
+  replicas: 1
+  image_name: "us-central1-docker.pkg.dev/airis-artifacts/packages/airis-postgres"
+  image_tag: "0.9.0"
+  servicePort: 5432
+  username: postgres
+  password: postgres
+  resources:
+    limits:
+      cpu: 1
+      memory: 2Gi
+    requests:
+      cpu: 1
+      memory: 2Gi
+  storage:
+    accessMode: ReadWriteOnce
+    storageClass: "standard-rwo"
+    size: 80Gi
+  vectorGolem:
+    image_name: "us-central1-docker.pkg.dev/airis-artifacts/packages/vectorgolem"
+    image_tag: "2026-03-09-T-04-02-07_alpha_9a381a9"
+    servicePort: 61728
+    resources:
+      limits:
+        cpu: 1
+        memory: 1Gi
+      requests:
+        cpu: 1
+        memory: 1Gi
+
+webappPostgres:
+  enabled: true
+  replicas: 1
+  image_name: "postgres"
+  image_tag: "17"
+  servicePort: 5432
+  username: postgres
+  password: postgres
+  resources:
+    limits:
+      cpu: 1
+      memory: 1Gi
+    requests:
+      cpu: 1
+      memory: 1Gi
+  storage:
+    accessMode: ReadWriteOnce
+    storageClass: "standard-rwo"
+    size: 80Gi
+  migration:
+    enabled: true
+    image_name: "us-central1-docker.pkg.dev/airis-artifacts/packages/initialize-webapp"
+    image_tag: "2026-03-09-T-04-02-07_alpha_9a381a9"
+    command: ""
+
+nats:
+  enabled: true
+  replicaCount: 1
+  image_name: "us-central1-docker.pkg.dev/airis-artifacts/packages/nats"
+  image_tag: "2026-03-09-T-04-02-07_alpha_9a381a9"
+  servicePort: 4222
+  monitorPort: 8222
+  metrics:
+    enabled: true
+  prometheusExporter:
+    image_name: "us-central1-docker.pkg.dev/airis-artifacts/packages/prometheus-nats-exporter"
+    image_tag: "2026-03-09-T-04-02-07_alpha_9a381a9"
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+  worker:
+    enabled: true
+    replicas: 2
+    image_name: "us-central1-docker.pkg.dev/airis-artifacts/packages/jetstream-worker"
+    image_tag: "2026-03-09-T-04-02-07_alpha_9a381a9"
+    resources:
+      limits:
+        cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 100m
+        memory: 256Mi
+  externalServices:
+    airisSearchServicePort: 8003
+    webappApiServerPort: 8083
+
+dagster:
+  enabled: true
+  replicas: 1
+  servicePort: 5000
+  image_name: "us-central1-docker.pkg.dev/airis-artifacts/packages/dagster_webserver"
+  image_tag: "2026-03-09-T-04-02-07_alpha_9a381a9"
+  slackbot:
+    enabled: true
+  resources:
+    limits:
+      cpu: 24
+      memory: 24Gi
+    requests:
+      cpu: 24
+      memory: 24Gi
+  storage:
+    accessMode: ReadWriteOnce
+    storageClass: "standard-rwo"
+    size: 10Gi
+  ingress:
+    host: "dagster.ramazzotti.raven.gdn"
+    ingressClassName: "ramazzotti-traefik-iap"
+  externalServices:
+    fileServerHost: "app.ramazzotti.raven.gdn"
+    speedopsHost: ""
+    webappApiServerPort: 8083
+
+appwrite:
+  enabled: true
+  server:
+    replicas: 1
+    servicePort: 80
+    image_name: "us-central1-docker.pkg.dev/airis-artifacts/packages/appwrite/appwrite"
+    image_tag: "2026-03-09-T-04-02-07_alpha_9a381a9"
+    resources:
+      limits:
+        cpu: 1
+        memory: 2Gi
+      requests:
+        cpu: 1
+        memory: 2Gi
+  console:
+    replicas: 1
+    image_name: "us-central1-docker.pkg.dev/airis-artifacts/packages/appwrite/console"
+    image_tag: "2026-03-09-T-04-02-07_alpha_9a381a9"
+    resources:
+      limits:
+        cpu: 0
+        memory: 1Gi
+      requests:
+        cpu: 0
+        memory: 1Gi
+  realtime:
+    replicas: 1
+    image_name: "us-central1-docker.pkg.dev/airis-artifacts/packages/appwrite/appwrite"
+    image_tag: "2026-03-09-T-04-02-07_alpha_9a381a9"
+  redis:
+    servicePort: 6379
+    image_name: "us-central1-docker.pkg.dev/airis-artifacts/packages/redis"
+    image_tag: "2026-03-09-T-04-02-07_alpha_9a381a9"
+    maxmemory: "2048mb"
+    resources:
+      limits:
+        cpu: 1
+        memory: 2.2Gi
+      requests:
+        cpu: 1
+        memory: 2.2Gi
+  mariadb:
+    replicas: 1
+    host: "mariadb.default.svc.cluster.local"
+    servicePort: 3306
+    image_name: "us-central1-docker.pkg.dev/airis-artifacts/packages/airis-mariadb"
+    image_tag: "2026-03-09-T-04-02-07_alpha_9a381a9"
+    resources:
+      limits:
+        cpu: 1
+        memory: 4Gi
+      requests:
+        cpu: 1
+        memory: 4Gi
+    storage:
+      accessMode: ReadWriteOnce
+      storageClass: "standard-rwo"
+      size: 100Gi
+  mariadbOperator:
+    enabled: true
+    backup:
+      enabled: true
+      runImmediately: false
+      schedule: "0 0 * * *"
+      maxRetention: "168h"
+      storageSize: "20Gi"
+    restore:
+      enabled: false
+      backupName: "mariadb-physical-backup"
+  initializeWebapp:
+    image_name: "us-central1-docker.pkg.dev/airis-artifacts/packages/initialize-webapp"
+    image_tag: "2026-03-09-T-04-02-07_alpha_9a381a9"
+  ingress:
+    ingressClassName: "ramazzotti-traefik-public"
+    annotations: {}
+    pathType: ImplementationSpecific
+    appwrite:
+      host: "app.ramazzotti.raven.gdn"
+    console:
+      host: "app.ramazzotti.raven.gdn"
+    realtime:
+      host: "app.ramazzotti.raven.gdn"
+
+elasticsearch:
+  enabled: false
+
+autoScaler:
+  enabled: false
+
+dedupService:
+  enabled: true
+  replicas: 1
+  servicePort: 61725
+  image_name: "us-central1-docker.pkg.dev/airis-artifacts/packages/dedup-service"
+  image_tag: "2026-03-09-T-04-02-07_alpha_9a381a9"
+  resources:
+    limits:
+      cpu: 0.5
+      memory: 1Gi
+    requests:
+      cpu: 0.5
+      memory: 1Gi
+
+downloadAssets:
+  enabled: true
+
+kai:
+  enabled: false

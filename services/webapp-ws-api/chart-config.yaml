@@ -1,0 +1,4 @@
+chart:
+  repoURL: https://github.com/yoav-test/service-chart-poc.git
+  targetRevision: main
+  path: .

@@ -1,0 +1,74 @@
+replicaCount: 4
+
+image:
+  repository: us-central1-docker.pkg.dev/airis-artifacts/packages/webapp-file-server
+  tag: "2026-03-09-T-04-02-07_alpha_9a381a9"
+
+env:
+  GOOGLE_APPLICATION_CREDENTIALS: "/secrets/gs-secret.json"
+  MAILBOX_UPLOAD_BUCKET: "airis-results-ramazzotti"
+  FS_PREFIX: "gs://"
+  FILE_SERVER_URL: "http://app.ramazzotti.raven.gdn"
+  FILE_SERVER_PORT: "8000"
+  FILE_SERVER_REFERENCES_PREFIX: "storage/airis-pocs/geolocation/robusta/"
+  FILE_SERVER_RESULTS_ASSETS_PREFIX: "storage/airis-results-ramazzotti/ramazzotti"
+  FILE_SERVER_AWS_DEFAULT_REGION: "us-east-1"
+  FILE_SERVER_AWS_REFERENCE_BUCKET_NAME: "airis-imagen-geolocation-assets"
+  FILE_SERVER_AWS_REFERENCE_REGION: "il-central-1"
+  FILE_SERVER_SOCIAL_ACCOUNT_PICTURES_PREFIX: "storage/airis-reach-raw-data/metadata-urls/ramazzotti"
+
+envFromSecrets:
+  - secretName: appwrite-api-key
+    keys:
+      - APPWRITE_API_KEY
+
+resources:
+  limits:
+    cpu: 0.5
+    memory: 1Gi
+  requests:
+    cpu: 0.5
+    memory: 1Gi
+
+service:
+  port: 8000
+  portName: http
+
+extraVolumes:
+  - name: gs-secret
+    secret:
+      secretName: gs-secret
+      items:
+        - key: gs-secret.json
+          path: gs-secret.json
+
+extraVolumeMounts:
+  - name: gs-secret
+    mountPath: /secrets
+    readOnly: true
+
+livenessProbe:
+  enabled: true
+  httpGet:
+    path: /healthz
+    port: 8000
+  initialDelaySeconds: 120
+  periodSeconds: 120
+
+ingress:
+  enabled: true
+  className: ramazzotti-traefik-public
+  hosts:
+    - host: app.ramazzotti.raven.gdn
+      paths:
+        - path: /storage
+          pathType: ImplementationSpecific
+
+podAnnotations:
+  gke-gcsfuse/volumes: "true"
+  gke-gcsfuse/cpu-limit: "0"
+  gke-gcsfuse/memory-limit: "0"
+  gke-gcsfuse/ephemeral-storage-limit: "0"
+
+serviceAccount:
+  name: airis

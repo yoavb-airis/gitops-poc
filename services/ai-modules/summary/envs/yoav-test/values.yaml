@@ -1,0 +1,81 @@
+replicaCount: 1
+
+image:
+  repository: us-central1-docker.pkg.dev/airis-artifacts/packages/summary
+  tag: "2026-03-09-T-04-02-07_alpha_9a381a9"
+
+env:
+  SHARED_VOLUME: "/data"
+  BENTOML_DO_NOT_TRACK: "True"
+  TIMEOUT: "1500"
+  HF_HOME: "/app/model_data"
+  API_BASE: "http://translation-onprem-llm.default.svc.cluster.local:8007/v1"
+
+resources:
+  limits:
+    cpu: 1
+    memory: 2Gi
+  requests:
+    cpu: 1
+    memory: 2Gi
+
+gpu:
+  enabled: false
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+postman:
+  image:
+    repository: "us-central1-docker.pkg.dev/airis-artifacts/packages/postman"
+    tag: "2026-03-09-T-04-02-07_alpha_9a381a9"
+  env:
+    JOB_TYPE: "summary"
+    SHARED_VOLUME: "/data"
+    POST_OFFICE_URL: "http://post-office.default.svc.cluster.local:2704"
+    INFERENCE_URL: "http://localhost:3000/infer"
+    IS_API: "True"
+    SLEEP_TIME: "1"
+    MONITOR_FLAG: "True"
+    TIMEOUT: "550"
+    SHOULD_UPLOAD_DIR: "false"
+    GOOGLE_APPLICATION_CREDENTIALS: "/secrets/gs-secret.json"
+  extraVolumeMounts:
+    - name: gs-secret
+      mountPath: /secrets
+      readOnly: true
+
+service:
+  port: 3000
+
+podAnnotations:
+  gke-gcsfuse/volumes: "true"
+  gke-gcsfuse/cpu-limit: "0"
+  gke-gcsfuse/memory-limit: "0"
+  gke-gcsfuse/ephemeral-storage-limit: "0"
+
+assetsPvc:
+  enabled: true
+  claimName: "assets-pvc"
+  mountPath: "/app/model_data"
+  subPath: "airis-environment-assets/translation_onprem/1.0.0/"
+  readOnly: true
+
+initContainers:
+  - name: check-llm-server-endpoint
+    image: "curlimages/curl:latest"
+    command: ["sh", "-c"]
+    args:
+      - |
+        until curl -sf http://translation-onprem-llm.default.svc.cluster.local:8007/health; do echo "Waiting for LLM..."; sleep 5; done
+
+extraVolumes:
+  - name: gs-secret
+    secret:
+      secretName: gs-secret
+      items:
+        - key: gs-secret.json
+          path: gs-secret.json
+
+serviceAccount:
+  name: airis
