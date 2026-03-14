@@ -72,5 +72,12 @@ extraVolumes:
         - key: gs-secret.json
           path: gs-secret.json
 
+assetsPvc:
+  enabled: true
+  claimName: "assets-pvc"
+  mountPath: "/home/ubuntu/airis/ai/face_detection_clustering"
+  subPath: "airis-environment-assets/face_detection_clustering/"
+  readOnly: true
+
 serviceAccount:
   name: airis
