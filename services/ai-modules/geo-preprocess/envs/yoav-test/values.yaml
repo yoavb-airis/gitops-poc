@@ -65,8 +65,8 @@ podAnnotations:
 assetsPvc:
   enabled: true
   claimName: "assets-pvc"
-  mountPath: "/home/ubuntu/airis/ai/geo/assets"
-  subPath: "airis-environment-assets/geolocation/assets/"
+  mountPath: "/home/ubuntu/airis/ai/geo_preprocess"
+  subPath: "airis-environment-assets/geo-preprocess/1.0.0"
   readOnly: true
 
 extraVolumes:

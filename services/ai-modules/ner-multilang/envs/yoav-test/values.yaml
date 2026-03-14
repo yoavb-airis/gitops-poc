@@ -8,6 +8,7 @@ env:
   SHARED_VOLUME: "/data"
   BENTOML_DO_NOT_TRACK: "True"
   TIMEOUT: "1500"
+  API_BASE: "http://translation-onprem-llm.default.svc.cluster.local:8007/v1"
 
 resources:
   limits:
