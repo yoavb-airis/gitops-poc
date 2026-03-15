@@ -1,4 +1,0 @@
-chart:
-  repoURL: https://github.com/yoavb-airis/poc-chart.git
-  targetRevision: main
-  path: .
