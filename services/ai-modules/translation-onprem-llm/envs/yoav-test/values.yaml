@@ -81,6 +81,8 @@ initContainers:
         if [ -d "$MODEL_DIR" ]; then
           echo "Model already exists, skipping download"
         else
+          echo "Activating service account..."
+          gcloud auth activate-service-account --key-file=/secrets/gs-secret.json
           echo "Downloading model..."
           gcloud storage cp -r gs://airis-pocs/translation_onprem/1.0.0/* /app/model_data/
         fi
