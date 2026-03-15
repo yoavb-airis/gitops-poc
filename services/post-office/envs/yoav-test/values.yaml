@@ -1,3 +1,5 @@
+fullnameOverride: post-office
+
 replicaCount: 2
 
 image:

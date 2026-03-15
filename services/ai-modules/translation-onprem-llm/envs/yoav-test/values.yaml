@@ -1,3 +1,5 @@
+fullnameOverride: translation-onprem-llm
+
 replicaCount: 1
 
 image:

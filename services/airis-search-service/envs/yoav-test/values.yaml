@@ -1,3 +1,5 @@
+fullnameOverride: airis-search-service
+
 replicaCount: 2
 
 image:

@@ -1,3 +1,5 @@
+fullnameOverride: airis-webapp
+
 replicaCount: 1
 
 image:
