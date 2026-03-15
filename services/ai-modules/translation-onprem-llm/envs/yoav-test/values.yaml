@@ -62,7 +62,7 @@ pvc:
   storageClass: "standard-rwo"
 
 extraVolumeMounts:
-  - name: translation-onprem-llm-yoav-test-ai-module-pvc
+  - name: translation-onprem-llm-pvc
     mountPath: /app/model_data
 
 extraVolumes:
@@ -91,7 +91,7 @@ initContainers:
     env:
       GOOGLE_APPLICATION_CREDENTIALS: "/secrets/gs-secret.json"
     volumeMounts:
-      - name: translation-onprem-llm-yoav-test-ai-module-pvc
+      - name: translation-onprem-llm-pvc
         mountPath: /app/model_data
       - name: gs-secret
         mountPath: /secrets
