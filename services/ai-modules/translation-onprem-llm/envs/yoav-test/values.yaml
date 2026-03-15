@@ -1,0 +1,119 @@
+replicaCount: 1
+
+image:
+  repository: us-central1-docker.pkg.dev/airis-artifacts/packages/vllm/vllm-openai
+  tag: "2026-03-09-T-04-02-07_alpha_9a381a9"
+
+args:
+  - "--model"
+  - "Qwen/Qwen2.5-14B-Instruct-GPTQ-Int4"
+  - "--port"
+  - "8007"
+  - "--max-model-len"
+  - "9600"
+  - "--max-num-batched-tokens"
+  - "9600"
+  - "--max-num-seqs"
+  - "50"
+  - "--gpu-memory-utilization"
+  - "0.9"
+  - "--enable-prefix-caching"
+  - "--download-dir"
+  - "/app/model_data"
+
+resources:
+  limits:
+    cpu: 1
+    memory: 16Gi
+    nvidia.com/gpu: 1
+  requests:
+    cpu: 1
+    memory: 16Gi
+    nvidia.com/gpu: 1
+
+service:
+  port: 8007
+
+gpu:
+  enabled: true
+  nodeSelector:
+    node_pool: gpu-node-pool
+  tolerations:
+    - key: "nvidia.com/gpu"
+      operator: "Exists"
+      effect: "NoSchedule"
+    - key: "airis-labs.com/gpu"
+      operator: "Exists"
+      effect: "NoSchedule"
+  ldLibraryPath: "/usr/local/nvidia/lib64"
+
+postman:
+  enabled: false
+
+sharedVolume:
+  enabled: false
+
+pvc:
+  enabled: true
+  size: "50Gi"
+  accessMode: ReadWriteOnce
+  storageClass: "standard-rwo"
+
+extraVolumeMounts:
+  - name: translation-onprem-llm-yoav-test-ai-module-pvc
+    mountPath: /app/model_data
+
+extraVolumes:
+  - name: gs-secret
+    secret:
+      secretName: gs-secret
+      items:
+        - key: gs-secret.json
+          path: gs-secret.json
+
+initContainers:
+  - name: download-model
+    image: gcr.io/google.com/cloudsdktool/google-cloud-cli:alpine
+    command: ["sh", "-c"]
+    args:
+      - |
+        MODEL_DIR="/app/model_data/models--Qwen--Qwen2.5-14B-Instruct-GPTQ-Int4"
+        if [ -d "$MODEL_DIR" ]; then
+          echo "Model already exists, skipping download"
+        else
+          echo "Downloading model..."
+          gcloud storage cp -r gs://airis-pocs/translation_onprem/1.0.0/* /app/model_data/
+        fi
+    env:
+      GOOGLE_APPLICATION_CREDENTIALS: "/secrets/gs-secret.json"
+    volumeMounts:
+      - name: translation-onprem-llm-yoav-test-ai-module-pvc
+        mountPath: /app/model_data
+      - name: gs-secret
+        mountPath: /secrets
+        readOnly: true
+
+livenessProbe:
+  enabled: true
+  httpGet:
+    path: /health
+    port: 8007
+  initialDelaySeconds: 300
+  periodSeconds: 30
+
+readinessProbe:
+  enabled: true
+  httpGet:
+    path: /health
+    port: 8007
+  initialDelaySeconds: 60
+  periodSeconds: 10
+
+podAnnotations:
+  gke-gcsfuse/volumes: "true"
+  gke-gcsfuse/cpu-limit: "0"
+  gke-gcsfuse/memory-limit: "0"
+  gke-gcsfuse/ephemeral-storage-limit: "0"
+
+serviceAccount:
+  name: airis
